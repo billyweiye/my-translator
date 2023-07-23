@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@codemirror/legacy-modes": "^6.3.3",
+    "@uiw/codemirror-theme-bbedit": "^4.21.8",
     "@uiw/codemirror-theme-xcode": "^4.21.7",
     "@uiw/codemirror-themes": "^4.21.7",
     "@uiw/react-codemirror": "^4.21.7",

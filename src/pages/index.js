@@ -2,6 +2,8 @@ import { CodeBlock } from '@/components/CodeBlock';
 import { LanguageSelect } from '@/components/LanguageSelect';
 import { ModelSelect } from '@/components/ModelSelect';
 import { TextBlock } from '@/components/TextBlock';
+import { SwapLanguage } from '@/components/SwapLanguage';
+import { TranslateButton } from '@/components/TranslateButton';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
@@ -10,14 +12,13 @@ export default function Home() {
   const [outputLanguage, setOutputLanguage] = useState('Python');
   const [inputCode, setInputCode] = useState('');
   const [outputCode, setOutputCode] = useState('');
-  const [model, setModel] = useState('gpt-3.5-turbo');
+  // const [model, setModel] = useState('gpt-3.5-turbo');
   const [loading, setLoading] = useState(false);
   const [hasTranslated, setHasTranslated] = useState(false);
 
+  const model = 'gpt-3.5-turbo';
   const handleTranslate = async () => {
-    const maxCodeLength = model === 'gpt-3.5-turbo' ? 6000 : 12000;
-
-
+    const maxCodeLength = 3000;
 
     if (inputLanguage === outputLanguage) {
       alert('Please select different languages.');
@@ -120,86 +121,86 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex h-full min-h-screen flex-col items-center bg-[#0E1117] px-4 pb-20 text-neutral-200 sm:px-10">
-        <div className="mt-10 flex flex-col items-center justify-center sm:mt-20">
-          <div className="text-4xl font-bold">AI Code Translator</div>
-        </div>
-
+      <div className="flex h-full min-h-screen flex-col items-center bg-white px-4 pb-20 text-gray-800">
 
 
         <div className="mt-2 flex items-center space-x-2">
-          <ModelSelect model={model} onChange={(value) => setModel(value)} />
+          {/* <ModelSelect model={model} onChange={(value) => setModel(value)} /> */}
 
-          <button
-            className="w-[140px] cursor-pointer rounded-md bg-violet-500 px-4 py-2 font-bold hover:bg-violet-600 active:bg-violet-700"
-            onClick={() => handleTranslate()}
-            disabled={loading}
-          >
-            {loading ? 'Translating...' : 'Translate'}
-          </button>
+          {/* <TranslateButton loading={loading} handleTranslate={handleTranslate} /> */}
         </div>
 
-        <div className="mt-2 text-center text-xs">
-          {loading
-            ? 'Translating...'
-            : hasTranslated
-              ? 'Output copied to clipboard!'
-              : 'Enter some code and click "Translate"'}
-        </div>
 
-        <div className="mt-6 flex w-full max-w-[1200px] flex-col justify-between sm:flex-row sm:space-x-4">
-          <div className="h-100 flex flex-col justify-center space-y-2 sm:w-2/4">
-            <div className="text-center text-xl font-bold">Input</div>
+        <div className="mt-8 w-2/3 ">
+          <div class="grid grid-cols-8 gap-2 ">
+            <div className="col-span-3 justify-center">
 
-            <LanguageSelect
-              language={inputLanguage}
-              onChange={(value) => {
-                setInputLanguage(value);
-                setHasTranslated(false);
-                setInputCode('');
-                setOutputCode('');
-              }}
-            />
+              <div className="flex">
+                <LanguageSelect
+                  language={inputLanguage}
+                  onChange={(value) => {
+                    setInputLanguage(value);
+                    setHasTranslated(false);
+                    setInputCode('');
+                    setOutputCode('');
+                  }}
+                />
+                <div class='ml-auto'>
+                  <TranslateButton loading={loading} handleTranslate={handleTranslate} />
+                </div>
+              </div>
 
-            {inputLanguage === 'Natural Language' ? (
-              <TextBlock
-                text={inputCode}
-                editable={!loading}
-                onChange={(value) => {
-                  setInputCode(value);
-                  setHasTranslated(false);
-                }}
-              />
-            ) : (
-              <CodeBlock
-                code={inputCode}
-                editable={!loading}
-                onChange={(value) => {
-                  setInputCode(value);
-                  setHasTranslated(false);
-                }}
-              />
-            )}
-          </div>
-          <div className="mt-8 flex h-full flex-col justify-center space-y-2 sm:mt-0 sm:w-2/4">
-            <div className="text-center text-xl font-bold">Output</div>
+              <div>
+                {inputLanguage === 'Natural Language' ? (
+                  <TextBlock
+                    text={inputCode}
+                    editable={!loading}
+                    onChange={(value) => {
+                      setInputCode(value);
+                      setHasTranslated(false);
+                    }}
+                  />
+                ) : (
+                  <CodeBlock
+                    code={inputCode}
+                    editable={!loading}
+                    onChange={(value) => {
+                      setInputCode(value);
+                      setHasTranslated(false);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
 
-            <LanguageSelect
-              language={outputLanguage}
-              onChange={(value) => {
-                setOutputLanguage(value);
-                setOutputCode('');
-              }}
-            />
+            <div class="flex-col col-span-2 justify-self-center		">
+              <SwapLanguage initInputLanguage={inputLanguage}
+                initOutputLanguage={outputLanguage}
+                setInputLanguage={setInputLanguage}
+                setOutputLanguage={setOutputLanguage} />
+            </div>
 
-            {outputLanguage === 'Natural Language' ? (
-              <TextBlock text={outputCode} />
-            ) : (
-              <CodeBlock code={outputCode} />
-            )}
+            <div className="col-span-3 justify-center ">
+
+              <div className="relative">
+                <LanguageSelect
+                  language={outputLanguage}
+                  onChange={(value) => {
+                    setOutputLanguage(value);
+                    setOutputCode('');
+                  }}
+                />
+                {outputLanguage === 'Natural Language' ? (
+                  <TextBlock text={outputCode} />
+                ) : (
+                  <CodeBlock code={outputCode} />
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </>
+
   );
 }

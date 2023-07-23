@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import AIStream  from '@/utils/index';
+import AIStream  from '@/utils/stream';
 
 export const runtime = 'edge';
 
