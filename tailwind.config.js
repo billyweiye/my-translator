@@ -13,7 +13,8 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors:{
-        'klein-blue':'#002FA7'
+        'klein-blue':'#002FA7',
+        'sunset':'#F2C3A7',
       }
     },
   },
