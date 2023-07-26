@@ -15,6 +15,7 @@ module.exports = {
       colors:{
         'klein-blue':'#002FA7',
         'sunset':'#F2C3A7',
+        'sunrise':'#BF5A1F',
       }
     },
   },

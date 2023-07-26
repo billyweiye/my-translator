@@ -22,5 +22,14 @@ body {
 }
 
 
-
-
+@layer components {
+  .display {
+    @apply  text-[96px] font-semibold leading-[88px] tracking-[-2%];
+  }
+  .h1 {
+    @apply  text-[64px] font-semibold leading-[72px] tracking-[0%];
+  }
+  .body-xl {
+    @apply font-sans text-[24px] font-normal leading-[36px] tracking-[0%];
+  }
+}

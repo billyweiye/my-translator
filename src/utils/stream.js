@@ -1,5 +1,5 @@
-import { Configuration, OpenAIApi } from 'openai-edge';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { Configuration, OpenAIApi } from "openai-edge";
+import { OpenAIStream } from "ai";
 
 // Create an OpenAI API client (that's edge friendly!)
 const config = new Configuration({
@@ -8,15 +8,12 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 // Set the runtime to edge for best performance
-export const runtime = 'edge';
+export const runtime = "edge";
 
-
-
-import endent from 'endent';
-
+import endent from "endent";
 
 const createPrompt = (inputLanguage, outputLanguage, inputCode) => {
-  if (inputLanguage === 'Natural Language') {
+  if (inputLanguage === "Natural Language") {
     return endent`
     You are an expert programmer in all programming languages. Translate the natural language to "${outputLanguage}" code. Do not include \`\`\`.
 
@@ -35,7 +32,7 @@ const createPrompt = (inputLanguage, outputLanguage, inputCode) => {
 
     ${outputLanguage} code (no \`\`\`):
     `;
-  } else if (outputLanguage === 'Natural Language') {
+  } else if (outputLanguage === "Natural Language") {
     return endent`
       You are an expert programmer in all programming languages. Translate the "${inputLanguage}" code to natural language in plain English that the average adult could understand. Respond as bullet points starting with -.
   
@@ -77,20 +74,22 @@ const createPrompt = (inputLanguage, outputLanguage, inputCode) => {
   }
 };
 
-export default async function AIStream(inputLanguage, outputLanguage, inputCode, model) {
+export default async function AIStream(
+  inputLanguage,
+  outputLanguage,
+  inputCode,
+  model
+) {
   const prompt = createPrompt(inputLanguage, outputLanguage, inputCode);
 
-  const system = { role: 'system', content: prompt };
-
+  const system = { role: "system", content: prompt };
 
   const res = await openai.createChatCompletion({
     model,
     messages: [system],
     temperature: 0,
     stream: true,
-  })
-
-
+  });
 
   const decoder = new TextDecoder();
 
@@ -98,14 +97,14 @@ export default async function AIStream(inputLanguage, outputLanguage, inputCode,
     const statusText = res.statusText;
     const result = await res.body?.getReader().read();
     throw new Error(
-      `OpenAI API returned an error: ${decoder.decode(result?.value) || statusText
-      }`,
+      `OpenAI API returned an error: ${
+        decoder.decode(result?.value) || statusText
+      }`
     );
   }
 
   // Convert the response into a friendly text-stream
   const stream = OpenAIStream(res);
 
-
   return stream;
-};
+}

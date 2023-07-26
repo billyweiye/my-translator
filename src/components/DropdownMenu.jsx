@@ -7,7 +7,7 @@ export default function DropdownMenu() {
     <div >
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex justify-center text-lg font-mono font-bold text-slate-100 ">
+          <Menu.Button className="inline-flex justify-center text-lg font-mono font-bold text-slate-300 ">
             Products
             <ChevronDownIcon
               className="ml-2 -mr-1 h-5 w-5 self-center text-violet-200 hover:text-violet-100"
