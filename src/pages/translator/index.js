@@ -84,6 +84,8 @@ export default function Home() {
 
       code += chunkValue;
 
+      console.log(code);
+
       setOutputCode((prevCode) => prevCode + chunkValue);
     }
 

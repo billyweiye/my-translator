@@ -19,7 +19,7 @@ export default function DropdownMenu() {
           <div className="px-1 py-1 ">
             <Menu.Item>
               {({ active }) => (
-                <Link href='https://zaizai.run'
+                <Link href='/chat'
                   className={`${active ? 'bg-sunset text-slate-100 font-mono text-base'  : 'font-mono text-base text-slate-950'
                     } group flex w-full items-center rounded px-2 py-2`}
                 >

@@ -47,29 +47,87 @@ export default function ChatBox() {
     } else return;
 
 
+
     try {
+      const controller = new AbortController();
+
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
+        signal: controller.signal,
         body: JSON.stringify({ activateStatus: activated, records: history, user: cookie[COOKIE_NAME] })
       });
 
-      const data = await response.json();
-      console.log(response.ok)
-      if (!response.ok) {
-        throw (
-          data.error ||
-          new Error(`Request failed with status ${response.status}`)
-        );
-      }
-      else if (!activated && data.activate) {
+      if (!activated) {
+        const data=await response.json();
+        console.log(data);
+        if (data.activate) {
+          setHistory((prevHistory) => [...prevHistory, data.result]);
+        }
+        else {
+          setHistory((prevHistory) => [...prevHistory, data.result]);
+        }
+        setLoading(false);
         setActive(true);
       }
-      setLoading(false);
-      setHistory(data.result);
-      console.log(data.result)
+      else  {
+        if (!response.ok) {
+          setLoading(false);
+          alert('Something went wrong.');
+          return;
+        }
+
+        const data = response.body;
+
+
+        if (!data) {
+          setLoading(false);
+          alert('Something went wrong.');
+          return;
+        }
+    
+        const reader = data.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let code = '';
+
+  
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          const chunkValue = decoder.decode(value);
+
+          code += chunkValue;
+
+          setLoading(false);
+
+          setHistory((prevHistory) => {
+            if (prevHistory.slice(-1)[0].role === "user") {
+              return [
+                ...prevHistory,
+                {
+                  role: "assistant",
+                  content: code,
+                },
+              ];
+            } else {
+              return [
+                ...prevHistory.slice(0, -1),
+                {
+                  role: "assistant",
+                  content: code,
+                },
+              ];
+            }
+          });
+        }
+
+      }
+
+      
+
     } catch (error) {
       // Consider implementing your own error handling logic here
       //console.error(error);
@@ -86,7 +144,7 @@ export default function ChatBox() {
   
   
   
-      {loading && <LoadingChatLine />}
+      {/* {loading && <LoadingChatLine />} */}
   
       <div className="mt-6 flex clear-both">
         <ClearThread type="submit" className="mr-4 flex-none" onClick={() => {

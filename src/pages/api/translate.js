@@ -5,7 +5,6 @@ import AIStream  from '@/utils/stream';
 export const runtime = 'edge';
 
 export default async function handler (req)  {
-  console.log("ok");
   try {
     const { inputLanguage, outputLanguage, inputCode, model } = await req.json();
 
@@ -15,6 +14,7 @@ export default async function handler (req)  {
       inputCode,
       model,
     );
+
 
     return new Response(stream);
   } catch (error) {
