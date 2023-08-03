@@ -122,13 +122,13 @@ export default function ChatBox() {
   }
 
   return (
-    <div class="h-screen w-full flex flex-col ">
-      <div className="rounded-xl h-1/3 border-zinc-100  border-2 mt-6">
+    <div class="w-full flex flex-col flex-grow">
+      <div className="rounded-xl border-zinc-100  border-2 mt-6 h-48 max-h-96 overflow-y-auto">
         {history.map((props, index) => (
           <Chats key={index} role={props.role} content={props.content} />
         ))}
       </div>
-      <div className="flex flex-grow items-end ">
+      <div className="absolute inset-x-0 bottom-0  ">
         <div className="grid grid-cols-6 gap-3 w-full mb-6">
           <div className="justify-self-end	">
             <ClearThread
