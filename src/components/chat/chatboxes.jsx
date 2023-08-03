@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Button from "./button";
 import Chats from "./chats";
 import { LoadingChatLine } from "./chats";
@@ -13,6 +13,7 @@ export default function ChatBox() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activated, setActive] = useState(false);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -121,9 +122,17 @@ export default function ChatBox() {
     }
   }
 
+  // 自动滚动到底部
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [history]);
+
   return (
     <div class="w-full flex flex-col flex-grow">
-      <div className="rounded-xl border-zinc-100  border-2 mt-6 h-48 max-h-96 overflow-y-auto">
+      <div ref={chatContainerRef} className="rounded-xl border-zinc-100  border-2 mt-6 h-[48rem] overflow-y-auto ">
         {history.map((props, index) => (
           <Chats key={index} role={props.role} content={props.content} />
         ))}
