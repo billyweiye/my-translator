@@ -122,52 +122,57 @@ export default function ChatBox() {
   }
 
   return (
-    <>
-      <div class="min-h-screen flex flex-col justify-items-stretch	">
-        <div className="rounded-xl h-80 border-zinc-100  border-4 mt-6">
-          {history.map((props, index) => (
-            <Chats key={index} role={props.role} content={props.content} />
-          ))}
-        </div>
-
-        <div class="flex mt-6 mb-8 justify-center self-end">
-          <ClearThread
-            type="submit"
-            className="mr-4 flex-none"
-            onClick={() => {
-              setHistory([]);
-              setPrompt("");
-            }}
-          >
-            {" "}
-            Clear{" "}
-          </ClearThread>
-          <input
-            type="text"
-            aria-label="chat input"
-            required
-            className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 sm:text-sm"
-            value={prompt}
-            onChange={handleChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
+    <div class="h-screen w-full flex flex-col ">
+      <div className="rounded-xl h-1/3 border-zinc-100  border-2 mt-6">
+        {history.map((props, index) => (
+          <Chats key={index} role={props.role} content={props.content} />
+        ))}
+      </div>
+      <div className="flex flex-grow items-end ">
+        <div className="grid grid-cols-6 gap-3 w-full mb-6">
+          <div className="justify-self-end	">
+            <ClearThread
+              type="submit"
+              className="mr-4 flex-none"
+              onClick={() => {
+                setHistory([]);
+                setPrompt("");
+              }}
+            >
+              {" "}
+              Clear{" "}
+            </ClearThread>
+          </div>
+          <div className="col-span-4 justify-stretch">
+            <input
+              type="text"
+              aria-label="chat input"
+              required
+              className="w-full rounded-md border border-zinc-900/10 bg-white py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 sm:text-sm"
+              value={prompt}
+              onChange={handleChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmitApi(prompt);
+                  setPrompt("");
+                }
+              }}
+            />
+          </div>
+          <div className="justify-self-start">
+            <Button
+              type="submit"
+              className="ml-4 flex-none"
+              onClick={() => {
                 handleSubmitApi(prompt);
                 setPrompt("");
-              }
-            }}
-          />
-          <Button
-            type="submit"
-            className="ml-4 flex-none"
-            onClick={() => {
-              handleSubmitApi(prompt);
-              setPrompt("");
-            }}
-          >
-            Say
-          </Button>
+              }}
+            >
+              Say
+            </Button>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
