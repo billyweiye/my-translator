@@ -132,7 +132,10 @@ export default function ChatBox() {
 
   return (
     <div class="w-full flex flex-col flex-grow">
-      <div ref={chatContainerRef} className="rounded-xl border-zinc-100  border-2 mt-6 h-[48rem] overflow-y-auto ">
+      <div
+        ref={chatContainerRef}
+        className="rounded-xl border-zinc-100  border-2 mt-6 h-[24rem] overflow-y-auto "
+      >
         {history.map((props, index) => (
           <Chats key={index} role={props.role} content={props.content} />
         ))}
